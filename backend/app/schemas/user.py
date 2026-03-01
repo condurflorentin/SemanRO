@@ -26,6 +26,7 @@ class UserResponse(BaseModel):
     id: int
     email: str
     full_name: str
+    role: str = "user"
     is_active: bool
     is_verified: bool
     created_at: datetime
@@ -36,3 +37,48 @@ class UserResponse(BaseModel):
 # ── Mesaj generic ────────────────────────────────────────────
 class MessageResponse(BaseModel):
     message: str
+
+
+# ══════════════════════════════════════════════════════════════
+#  ADMIN SCHEMAS
+# ══════════════════════════════════════════════════════════════
+
+# ── Admin: actualizare utilizator ─────────────────────────────
+class AdminUserUpdate(BaseModel):
+    is_active: bool | None = None
+    is_verified: bool | None = None
+    role: str | None = Field(None, pattern="^(user|admin)$")
+
+
+# ── Admin: răspuns cu detalii extinse ─────────────────────────
+class AdminUserResponse(BaseModel):
+    id: int
+    email: str
+    full_name: str
+    role: str
+    is_active: bool
+    is_verified: bool
+    created_at: datetime
+    updated_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+# ── Admin: lista paginată ────────────────────────────────────
+class PaginatedUsersResponse(BaseModel):
+    users: list[AdminUserResponse]
+    total: int
+    page: int
+    per_page: int
+    pages: int
+
+
+# ── Admin: statistici dashboard ──────────────────────────────
+class AdminStatsResponse(BaseModel):
+    total_users: int
+    active_users: int
+    verified_users: int
+    new_users_today: int
+    new_users_this_week: int
+    new_users_this_month: int
+    recent_users: list[AdminUserResponse]

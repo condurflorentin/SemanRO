@@ -122,3 +122,31 @@ async def get_current_user_id(request: Request) -> int:
             detail="Token invalid",
         )
     return int(user_id)
+
+
+# ── Dependință: Verifică dacă user-ul e ADMIN ────────────────
+async def require_admin(request: Request) -> int:
+    """
+    Dependință FastAPI — permite accesul DOAR administratorilor.
+    Extrage role din JWT payload. Dacă nu e admin, 403 Forbidden.
+    """
+    token = request.cookies.get("access_token")
+    if not token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Nu ești autentificat",
+        )
+    payload = decode_token(token, expected_type="access")
+    user_id: int | None = payload.get("sub")
+    role: str | None = payload.get("role")
+    if user_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token invalid",
+        )
+    if role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acces interzis — doar administratorii pot accesa această resursă",
+        )
+    return int(user_id)

@@ -1,6 +1,7 @@
 import { useAuth } from './context/AuthContext';
 import LandingPage from './pages/LandingPage';
 import Dashboard from './pages/Dashboard';
+import AdminPanel from './pages/AdminPanel';
 
 function App() {
   const { user, loading } = useAuth();
@@ -13,7 +14,9 @@ function App() {
     );
   }
 
-  return user ? <Dashboard /> : <LandingPage />;
+  if (!user) return <LandingPage />;
+  if (user.role === 'admin') return <AdminPanel />;
+  return <Dashboard />;
 }
 
 export default App;

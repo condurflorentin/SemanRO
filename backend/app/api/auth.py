@@ -90,9 +90,10 @@ async def login(
             detail="Contul este dezactivat",
         )
 
-    # Generează JWT-uri
-    access_token = create_access_token(data={"sub": str(user.id)})
-    refresh_token = create_refresh_token(data={"sub": str(user.id)})
+    # Generează JWT-uri (include role pentru protecție admin)
+    token_data = {"sub": str(user.id), "role": user.role}
+    access_token = create_access_token(data=token_data)
+    refresh_token = create_refresh_token(data=token_data)
 
     # Setează cookie-urile HTTP-only (NU localStorage!)
     set_auth_cookies(response, access_token, refresh_token)
@@ -123,10 +124,12 @@ async def refresh_token(request: Request, response: Response):
 
     payload = decode_token(token, expected_type="refresh")
     user_id = payload.get("sub")
+    role = payload.get("role", "user")
 
     # Generează token nou
-    new_access = create_access_token(data={"sub": user_id})
-    new_refresh = create_refresh_token(data={"sub": user_id})
+    token_data = {"sub": user_id, "role": role}
+    new_access = create_access_token(data=token_data)
+    new_refresh = create_refresh_token(data=token_data)
     set_auth_cookies(response, new_access, new_refresh)
 
     return {"message": "Token reîmprospătat cu succes"}

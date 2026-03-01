@@ -59,9 +59,11 @@ app.add_middleware(
 # ── Înregistrare Rute ─────────────────────────────────────────
 from app.api.auth import router as auth_router    # noqa: E402
 from app.api.users import router as users_router  # noqa: E402
+from app.api.admin import router as admin_router  # noqa: E402
 
 app.include_router(auth_router)
 app.include_router(users_router)
+app.include_router(admin_router)
 
 
 # ── Health Check ──────────────────────────────────────────────
