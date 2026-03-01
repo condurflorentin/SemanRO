@@ -1,0 +1,44 @@
+# ── Virtual Environment Python ──────────────────
+Licenta/
+venv/
+.venv/
+env/
+
+# ── Variabile de mediu (NICIODATA pe Git!) ───────
+.env
+.env.*
+!.env.example
+
+# ── Python cache ─────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.pyc
+
+# ── Node modules ─────────────────────────────────
+node_modules/
+frontend/node_modules/
+
+# ── Build outputs ─────────────────────────────────
+dist/
+dist-ssr/
+frontend/dist/
+build/
+
+# ── IDE & OS ──────────────────────────────────────
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+
+# ── Logs ──────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+
+# ── Database locale ───────────────────────────────
+*.db
+*.sqlite3
